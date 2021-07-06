@@ -6,11 +6,11 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 16:59:13 by avogt             #+#    #+#             */
-/*   Updated: 2021/06/21 17:18:43 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/06 12:13:31 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
 int	get_num_philosophers(char *str)
 {

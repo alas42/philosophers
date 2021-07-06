@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/21 14:39:52 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/06 12:13:41 by avogt            ###   ########.fr       */
+/*   Created: 2021/07/05 21:59:17 by avogt             #+#    #+#             */
+/*   Updated: 2021/07/06 12:13:51 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	ft_usage(void)
+int	ft_len(char *str)
 {
-	printf("Error\nusage: nb_philo time_to_die time_to_eat time_to_sleep (n_eating_before_ending)\nthe time shall be given in milliseconds without point or other characters");
-	exit(EXIT_FAILURE);
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-void	ft_error(void)
+void	ft_putstr_fd(char *str)
 {
-	printf("Error\n");
-	exit(EXIT_FAILURE);
+	write(1, str, ft_len(str));
 }

@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   printing_messages.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/21 14:39:52 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/06 12:13:41 by avogt            ###   ########.fr       */
+/*   Created: 2021/07/06 10:52:44 by avogt             #+#    #+#             */
+/*   Updated: 2021/07/06 11:19:02 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	ft_usage(void)
+void	*eating(void *id)
 {
-	printf("Error\nusage: nb_philo time_to_die time_to_eat time_to_sleep (n_eating_before_ending)\nthe time shall be given in milliseconds without point or other characters");
-	exit(EXIT_FAILURE);
+	printf("philo%d is eating\n", *(int *)id);
+	return (NULL);
 }
 
-void	ft_error(void)
+void	*sleeping(void *id)
 {
-	printf("Error\n");
-	exit(EXIT_FAILURE);
+	printf("philo%d is sleeping\n", *(int *)id);
+	return (NULL);
+}
+
+void	*thinking(void *id)
+{
+	printf("philo%d is thinking\n", *(int *)id);
+	return (NULL);
+}
+
+double	get_ms_time(struct timeval start)
+{
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec - start.tv_sec) + (tv.tv_usec - start.tv_usec)
+			/ 1000.0);
 }

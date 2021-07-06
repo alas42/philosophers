@@ -6,7 +6,7 @@
 #    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/21 11:09:35 by avogt             #+#    #+#              #
-#    Updated: 2021/06/21 17:22:23 by avogt            ###   ########.fr        #
+#    Updated: 2021/07/06 11:25:03 by avogt            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,11 @@ NAME = philo
 
 FILES = philo.c \
 	error.c \
+	free.c \
 	parsing.c \
-	init.c 
+	init.c \
+	utils.c \
+	printing_messages.c
 
 FOLDER_SOURCES = srcs
 SOURCES_FILES = $(addprefix $(FOLDER_SOURCES)/,$(FILES))
@@ -28,10 +31,10 @@ CC = gcc
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(SOURCES_FILES) -o $(NAME) -lpthread 
+	@$(CC) $(SOURCES_FILES) -o $(NAME) -lpthread 
 
 %.o: %.c
-	@$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
+	@$(CC) $(IFLAGS) -o $@ -c $<
 
 clean:
 	@rm -f $(OBJS)

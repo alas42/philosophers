@@ -6,24 +6,24 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/06/21 17:32:10 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/06 10:59:54 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../includes/philo.h"
 
-static int	init_table(int ac, char *av[], t_table *table)
+static int	init_table(int ac, char *av[], t_constraints *c)
 {
 	if (ac >= 2)
-		table->num_philosophers = get_num_philosophers(av[1]);
+		c->table.num_philosophers = get_num_philosophers(av[1]);
 	else
-		table->num_philosophers = 3;
-	if (table->num_philosophers == -1)
+		c->table.num_philosophers = 3;
+	if (c->table.num_philosophers == -1)
 		return (-1);
-	table->num_forks = table->num_philosophers;
-	if (table->num_philosophers > 1)
-		table->num_forks = table->num_philosophers - 1;
-	if (table->num_philosophers == 0)
+	c->table.num_forks = c->table.num_philosophers;
+	if (c->table.num_philosophers > 1)
+		c->table.num_forks = c->table.num_philosophers - 1;
+	if (c->table.num_philosophers == 0)
 		return (-1);
 	return (1);
 }
@@ -53,9 +53,9 @@ static int	init_constraints(int ac, char *av[], t_constraints *cons)
 	return (1);
 }
 
-int	init(int ac, char *av[], t_table *t, t_constraints *c)
+int	init(int ac, char *av[], t_constraints *c)
 {
-	if (init_table(ac, av, t) == 1 && init_constraints(ac, av, c) == 1)
+	if (init_table(ac, av, c) == 1 && init_constraints(ac, av, c) == 1)
 		return (1);
 	return (-1);
 }
