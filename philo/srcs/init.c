@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/06 10:59:54 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/06 15:13:55 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,19 @@
 
 static int	init_table(int ac, char *av[], t_constraints *c)
 {
-	if (ac >= 2)
-		c->table.num_philosophers = get_num_philosophers(av[1]);
-	else
-		c->table.num_philosophers = 3;
+	c->table.num_philosophers = get_num_philosophers(av[1]);
 	if (c->table.num_philosophers == -1)
 		return (-1);
 	c->table.num_forks = c->table.num_philosophers;
-	if (c->table.num_philosophers > 1)
-		c->table.num_forks = c->table.num_philosophers - 1;
-	if (c->table.num_philosophers == 0)
+	if (c->table.num_philosophers == 1)
+		c->table.num_forks -= 1;
+	if (c->table.num_philosophers <= 0)
 		return (-1);
 	return (1);
 }
 
 static int	init_constraints(int ac, char *av[], t_constraints *cons)
 {
-	if (ac < 5 || ac > 6)
-		return (-1);
 	if (av[2] != NULL)
 		cons->time_to_die = (int)get_time(av[2]);
 	else
@@ -55,6 +50,8 @@ static int	init_constraints(int ac, char *av[], t_constraints *cons)
 
 int	init(int ac, char *av[], t_constraints *c)
 {
+	if (ac < 5 || ac > 6)
+		return (-1);
 	if (init_table(ac, av, c) == 1 && init_constraints(ac, av, c) == 1)
 		return (1);
 	return (-1);

@@ -6,7 +6,7 @@
 #    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/21 11:09:35 by avogt             #+#    #+#              #
-#    Updated: 2021/07/06 11:25:03 by avogt            ###   ########.fr        #
+#    Updated: 2021/07/10 18:23:31 by avogt            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ FILES = philo.c \
 	parsing.c \
 	init.c \
 	utils.c \
+	actions.c \
 	printing_messages.c
 
 FOLDER_SOURCES = srcs
