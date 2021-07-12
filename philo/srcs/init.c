@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/06 15:13:55 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/11 18:40:37 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ static int	init_constraints(int ac, char *av[], t_constraints *cons)
 	else
 		cons->time_to_think = 100;
 	if (ac == 6 && av[5] != NULL)
-		cons->times_eating = (int)get_time(av[5]);
+		cons->nb_meal = (int)get_time(av[5]);
 	else
-		cons->times_eating = -2;
-	if (cons->time_to_die == -1 || cons->time_to_eat == -1 || cons->time_to_think == -1 || cons->times_eating == -1)
+		cons->nb_meal = -2;
+	if (cons->time_to_die == -1 || cons->time_to_eat == -1 || cons->time_to_think == -1 || cons->nb_meal == -1)
 		return (-1);
 	return (1);
 }

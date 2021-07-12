@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 10:52:44 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/10 18:39:49 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/11 18:47:02 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,28 @@
 
 void	*eating(void *ptr)
 {
-	t_philo *ph =  (t_philo *)ptr;
-	printf("%ld philo%d is eating\n", get_ms_time() - ph->constraints->table.start, ph->id);
+	t_philo	*ph = (t_philo *)ptr;
+	printf("%ld%s %d is eating\n", get_ms_time() - ph->constraints->table.start, "\t", ph->id);
 	return (NULL);
 }
 
 void	*sleeping(void *ptr)
 {
-	t_philo *ph =  (t_philo *)ptr;
-	printf("%ld philo%d is sleeping\n", get_ms_time() - ph->constraints->table.start, ph->id);
+	t_philo	*ph = (t_philo *)ptr;
+	printf("%ld%s %d is sleeping\n", get_ms_time() - ph->constraints->table.start, "\t", ph->id);
 	return (NULL);
 }
 
 void	*thinking(void *ptr)
 {
-	t_philo *ph =  (t_philo *)ptr;
-	printf("%ld philo%d is thinking\n", get_ms_time() - ph->constraints->table.start, ph->id);
+	t_philo	*ph = (t_philo *)ptr;
+	printf("%ld%s %d is thinking\n", get_ms_time() - ph->constraints->table.start, "\t", ph->id);
 	return (NULL);
 }
 
-uint64_t	get_ms_time(void)
+void	*dying(void *ptr)
 {
-	struct timeval tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec *(uint64_t)1000) + (tv.tv_usec / 1000));
+	t_philo	*ph = (t_philo *)ptr;
+	printf("%ld%s %d died\n", get_ms_time() - ph->constraints->table.start, "\t", ph->id);
+	return (NULL);
 }
