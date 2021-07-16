@@ -5,96 +5,61 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 14:13:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/15 23:59:21 by avogt            ###   ########.fr       */
+/*   Created: 2021/07/06 10:52:44 by avogt             #+#    #+#             */
+/*   Updated: 2021/07/16 18:56:30 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int	permission_print(t_philo *philo)
+void	eating(t_philo *philo)
 {
-	int	ret;
-
-	ret = 0;
 	pthread_mutex_lock(&philo->state->lock);
-	if (philo->state->state == DEAD || philo->state->state == FULL)
-		ret = 1;
+	if (philo->state->state != DEAD)
+	{
+		philo->state->state = EATING;
+		printing(philo, EATING);
+		if (philo->constraints->nb_meal > 0)
+			philo->times_eating += 1;
+		philo->state->time = get_ms_time();
+		pthread_mutex_unlock(&philo->state->lock);
+		usleep(philo->constraints->time_to_eat * 1000);
+	}
+	pthread_mutex_unlock(&philo->state->lock);	
+}
+
+void	sleeping(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->state->lock);
+	if (philo->state->state != DEAD)
+	{
+		philo->state->state = SLEEPING;
+		printing(philo, SLEEPING);
+		pthread_mutex_unlock(&philo->state->lock);
+		usleep(philo->constraints->time_to_sleep * 1000);
+	}
 	pthread_mutex_unlock(&philo->state->lock);
-	return (ret);
 }
 
-static void	take_forks(t_philo *philo)
+void	thinking(t_philo *philo)
 {
-	int		lefty;
-
-	lefty = philo->id % 2;
-	if (lefty)
+	pthread_mutex_lock(&philo->state->lock);
+	if (philo->state->state != DEAD)
 	{
-		pthread_mutex_lock(&philo->left_fork->lock);
-		if (permission_print(philo))
-			return ;
-		take_fork(philo);
-		pthread_mutex_lock(&philo->right_fork->lock);
-		if (permission_print(philo))
-			return ;
-		take_fork(philo);
-		return ;
+		philo->state->state = THINKING;
+		printing(philo, THINKING);
 	}
-	pthread_mutex_lock(&philo->right_fork->lock);
-	if (permission_print(philo))
-		return ;
-	take_fork(philo);
-	pthread_mutex_lock(&philo->left_fork->lock);
-	if (permission_print(philo))
-		return ;
-	take_fork(philo);
+	pthread_mutex_unlock(&philo->state->lock);
 }
 
-static void	depose_forks(t_philo *philo)
+int		dying(t_philo *philo)
 {
-	int		lefty;
-
-	lefty = philo->id % 2;
-	if (lefty)
-	{
-		pthread_mutex_unlock(&philo->left_fork->lock);
-		depose_fork(philo);
-		pthread_mutex_unlock(&philo->right_fork->lock);
-		depose_fork(philo);
-	}
-	else
-	{
-		pthread_mutex_unlock(&philo->right_fork->lock);
-		depose_fork(philo);
-		pthread_mutex_unlock(&philo->left_fork->lock);
-		depose_fork(philo);
-	}
+	printing(philo, DEAD);
+	pthread_mutex_unlock(&philo->state->lock);
+	return (1);
 }
 
-void	*dining(void *ptr)
+void	take_fork(t_philo *philo)
 {
-	t_philo	*philo;
-	int		condition;
-
-	philo = (t_philo *)ptr;
-	condition = 1;
-	while (condition)
-	{
-		if (permission_print(philo))
-			break ;
-		take_forks(philo);
-		eating(ptr);
-		depose_forks(philo);
-		if (philo->times_eating == philo->constraints->nb_meal)
-		{
-			pthread_mutex_lock(&philo->state->lock);
-			philo->state->state = FULL;
-			pthread_mutex_unlock(&philo->state->lock);
-			break ;
-		}
-		sleeping(ptr);
-		thinking(ptr);
-	}
-	return (NULL);
+	printing(philo, TAKING_FORK);
 }

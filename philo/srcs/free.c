@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:22:34 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/15 18:32:27 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/16 11:11:51 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	free_philosophers(t_philosophers *p)
 	{
 		ph = p->first;
 		p->first = p->first->next;
+		pthread_mutex_destroy(&ph->state->lock);
 		free(ph->state);
 		free(ph);
 	}
@@ -42,6 +43,7 @@ void	free_forks(t_forks *f)
 	{
 		fo = f->first;
 		f->first = f->first->next;
+		pthread_mutex_destroy(&fo->lock);
 		free(fo);
 	}
 	free(f);

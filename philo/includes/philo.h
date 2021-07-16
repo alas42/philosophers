@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/15 23:58:33 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/16 17:38:37 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <sys/time.h>
 # include <stdint.h>
 
-enum statut { DEAD, EATING, SLEEPING, THINKING, FULL };
+enum statut { DEAD, EATING, SLEEPING, THINKING, TAKING_FORK, FULL };
 
 typedef struct				s_table
 {
@@ -36,6 +36,8 @@ typedef struct				s_constraints
 	double					time_to_sleep;
 	int						nb_meal;
 	t_table					table;
+	pthread_mutex_t			lock;
+	int						finished;
 }							t_constraints;
 
 typedef struct				s_state
@@ -80,7 +82,6 @@ void						ft_error(t_constraints *c);
 //			MESSAGES AND CORE THREAD PROGRAM
 void						thinking(t_philo *ptr);
 void						take_fork(t_philo *ptr);
-void						depose_fork(t_philo *philo);
 void						sleeping(t_philo *ptr);
 void						eating(t_philo *ptr);
 int							dying(t_philo *philo);
@@ -90,6 +91,7 @@ int							get_num_philosophers(char *str);
 int							get_time(char *str);
 uint64_t					get_ms_time(void);
 int							ft_len(char *str);
+void 						printing(t_philo *philo, int action);
 //			GETTERS
 t_fork						*get_fork_ptr(t_forks *forks, int index);
 t_philo						*get_philo(t_philosophers *p, int index);

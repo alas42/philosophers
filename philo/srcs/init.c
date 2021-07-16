@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/15 11:02:38 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/16 11:24:16 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static int	init_constraints(int ac, char *av[], t_constraints *cons)
 		cons->nb_meal = -2;
 	if (cons->time_to_die == -1 || cons->time_to_eat == -1 || cons->time_to_sleep == -1 || cons->nb_meal == -1)
 		return (-1);
+	cons->finished = 0;
+	pthread_mutex_init(&cons->lock, NULL);
 	return (1);
 }
 
