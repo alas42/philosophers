@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/24 17:12:08 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/25 17:16:56 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,24 @@ void	*finish(t_philo *philo)
 
 void	*reaping(void *ptr)
 {
-	t_philo		*philo;
-	t_philo		*first;
-	int			counter;
-	uint64_t	time;
+	t_philo			*philo;
+	t_philo			*first;
+	int				counter;
+	unsigned long	time;
+	int				max_meal;
 
 	first = (t_philo *)((t_philos *)ptr)->first;
+	max_meal = first->infos->table.num_philos;
 	counter = 0;
-	while (counter != first->infos->table.num_philosophers)
+	while (counter != max_meal)
 	{
 		counter = 0;
 		philo = first;
+		usleep(1000);
 		while (philo)
 		{
 			pthread_mutex_lock(&philo->state->lock);
-			time = get_ms_time() - philo->state->time;
+			time = (get_ms_time() - philo->infos->table.start) - philo->state->time;
 			if (philo->state->state != FULL
 				&& time >= first->infos->time_to_die)
 				return (finish(philo));
@@ -55,14 +58,14 @@ void	launch_forks(t_philos *philos, t_infos *infos)
 
 	i = 1;
 	infos->table.start = get_ms_time();
-	while (i <= infos->table.num_philosophers)
+	while (i <= infos->table.num_philos)
 	{
 		philo = get_philo(philos, i);
 		pthread_create(&philo->thread, NULL, dining, (void *)philo);
 		i += 2;
 	}
 	i = 2;
-	while (i <= infos->table.num_philosophers)
+	while (i <= infos->table.num_philos)
 	{
 		philo = get_philo(philos, i);
 		pthread_create(&philo->thread, NULL, dining, (void *)philo);
@@ -76,7 +79,7 @@ void	wait_forks(t_philos *philos, t_infos *infos)
 	t_philo	*philo;
 
 	counter = 1;
-	while (counter <= infos->table.num_philosophers)
+	while (counter <= infos->table.num_philos)
 	{
 		philo = get_philo(philos, counter);
 		pthread_join(philo->thread, NULL);
@@ -99,15 +102,15 @@ int	main(int argc, char *argv[])
 		return (ft_error(NULL, NULL, NULL));
 	if (init(argc, argv, infos) == -1)
 		return (ft_usage(infos, NULL, NULL));
-	forks = init_forks(infos->table.num_forks);
+	forks = init_forks(infos->table.num_philos);
 	if (!forks)
 		return (ft_error(infos, NULL, NULL));
-	philos = init_philos(infos->table.num_philosophers, infos, forks);
+	philos = init_philos(infos->table.num_philos, infos, forks);
 	if (!philos)
 		return (ft_error(infos, forks, NULL));
 	pthread_create(&grim_reaper, NULL, reaping, (void *)philos);
-	pthread_detach(grim_reaper);
 	launch_forks(philos, infos);
+	pthread_join(grim_reaper, NULL);
 	wait_forks(philos, infos);
 	ft_free(infos, forks, philos);
 	return (0);

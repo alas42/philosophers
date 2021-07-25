@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 21:59:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/24 11:35:47 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/25 17:09:13 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int	ft_len(char *str)
 	return (i);
 }
 
-uint64_t	get_ms_time(void)
+unsigned long	get_ms_time(void)
 {
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec *(uint64_t)1000) + (tv.tv_usec / 1000));
+	return ((tv.tv_sec *(unsigned long)1000) + (tv.tv_usec / 1000));
 }
 
 t_fork	*get_fork_ptr(t_forks *forks, int index)
@@ -50,7 +50,7 @@ t_state	*get_state_ptr(void)
 	pthread_mutex_init(&state->lock, NULL);
 	state->times_eating = 0;
 	state->state = THINKING;
-	state->time = get_ms_time();
+	state->time = 0;
 	return (state);
 }
 
@@ -66,4 +66,16 @@ t_philo	*get_philo(t_philos *p, int index)
 		philo = philo->next;
 	}
 	return (philo);
+}
+
+void	ft_usleep(unsigned long time)
+{
+	unsigned long start_ms;
+	unsigned long step_ms;
+
+	start_ms = get_ms_time();
+	while (get_ms_time() - start_ms < time)
+	{
+		usleep(400);
+	}
 }

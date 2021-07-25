@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/24 11:37:05 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/25 17:05:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,15 @@ enum e_statut { DEAD, EATING, SLEEPING, THINKING, TAKING_FORK, FULL };
 
 typedef struct s_table
 {
-	int						num_forks;
-	int						num_philosophers;
-	uint64_t				start;
+	int						num_philos;
+	unsigned long				start;
 }							t_table;
 
 typedef struct s_infos
 {
-	uint64_t				time_to_die;
-	uint64_t				time_to_eat;
-	uint64_t				time_to_sleep;
+	unsigned long			time_to_die;
+	unsigned long				time_to_eat;
+	unsigned long				time_to_sleep;
 	int						nb_meal;
 	t_table					table;
 	pthread_mutex_t			lock;
@@ -43,7 +42,7 @@ typedef struct s_infos
 typedef struct s_state
 {
 	pthread_mutex_t			lock;
-	uint64_t				time;
+	unsigned long				time;
 	int						times_eating;
 	int						state;
 }							t_state;
@@ -88,7 +87,7 @@ void						take_fork(t_philo *philo, t_fork *fork);
 
 int							get_num_philosophers(char *str);
 int							get_time(char *str);
-uint64_t					get_ms_time(void);
+unsigned long					get_ms_time(void);
 int							ft_len(char *str);
 void						printing(t_philo *philo, int action);
 
@@ -105,4 +104,5 @@ t_forks						*init_forks(int nb);
 void						ft_free(t_infos *infos, t_forks *f, t_philos *ps);
 void						free_philos(t_philos *p);
 void						free_forks(t_forks *f);
+void						ft_usleep(unsigned long time);
 #endif

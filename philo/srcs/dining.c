@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 14:13:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/24 17:12:26 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/25 17:14:52 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,17 @@ static int	is_dead(t_philo *philo)
 
 static int	is_full(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state->lock);
-	if (philo->state->times_eating == philo->infos->nb_meal)
+	if (philo->infos->nb_meal > 0)
 	{
-		philo->state->state = FULL;
-		printing(philo, FULL);
-		pthread_mutex_unlock(&philo->state->lock);
-		return (1);
+		philo->state->times_eating += 1;
+		if (philo->state->times_eating == philo->infos->nb_meal)
+		{
+			philo->state->state = FULL;
+			pthread_mutex_unlock(&philo->state->lock);
+			printing(philo, FULL);
+			return (1);
+		}
 	}
-	pthread_mutex_unlock(&philo->state->lock);
 	return (0);
 }
 
@@ -62,6 +64,7 @@ static void	take_forks(t_philo *philo)
 
 static void	depose_forks(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->state->lock);
 	if (philo->id % 2)
 	{
 		pthread_mutex_unlock(&philo->left_fork->lock);
@@ -80,7 +83,8 @@ void	*dining(void *ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr;
-	usleep(1000);
+	if (!(philo->id % 2) || philo->id == philo->infos->table.num_philos)
+		usleep(500);
 	while (1)
 	{
 		if (is_dead(philo))

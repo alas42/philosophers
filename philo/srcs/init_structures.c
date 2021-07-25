@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 14:29:51 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/18 17:16:21 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/25 17:05:58 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	add_to_philos(t_philos *p, int index, t_infos *infos, t_forks *forks)
 	new->next = NULL;
 	if (p->first == NULL)
 	{
-		new->left_fork = get_fork_ptr(forks, infos->table.num_forks);
+		new->left_fork = get_fork_ptr(forks, infos->table.num_philos);
 		p->first = new;
 		return (1);
 	}
