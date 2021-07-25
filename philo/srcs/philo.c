@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/18 18:00:37 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/24 17:12:08 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 void	*finish(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->infos->lock);
-	philo->infos->finished = 1;
-	philo->state->state = DEAD;
 	printing(philo, DEAD);
-	pthread_mutex_unlock(&philo->infos->lock);
 	pthread_mutex_unlock(&philo->state->lock);
 	return (NULL);
 }
@@ -47,7 +43,6 @@ void	*reaping(void *ptr)
 				counter++;
 			pthread_mutex_unlock(&philo->state->lock);
 			philo = philo->next;
-			usleep(1000);
 		}
 	}
 	return (NULL);
@@ -60,15 +55,14 @@ void	launch_forks(t_philos *philos, t_infos *infos)
 
 	i = 1;
 	infos->table.start = get_ms_time();
-	while ((double)i <= (double)infos->table.num_philosophers)
+	while (i <= infos->table.num_philosophers)
 	{
 		philo = get_philo(philos, i);
 		pthread_create(&philo->thread, NULL, dining, (void *)philo);
 		i += 2;
 	}
-	usleep(100);
 	i = 2;
-	while ((double)i <= (double)infos->table.num_philosophers)
+	while (i <= infos->table.num_philosophers)
 	{
 		philo = get_philo(philos, i);
 		pthread_create(&philo->thread, NULL, dining, (void *)philo);

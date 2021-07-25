@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/18 16:50:59 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/24 10:53:17 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,19 @@ static int	init_table(int ac, char *av[], t_infos *c)
 static int	init_constraints(int ac, char *av[], t_infos *infos)
 {
 	if (av[2] != NULL)
-		infos->time_to_die = (int)get_time(av[2]);
+		infos->time_to_die = (uint64_t)get_time(av[2]);
 	else
-		infos->time_to_die = 1000;
+		infos->time_to_die = -1;
 	if (av[3] != NULL)
-		infos->time_to_eat = (int)get_time(av[3]);
+		infos->time_to_eat = (uint64_t)get_time(av[3]);
 	else
-		infos->time_to_eat = 200;
+		infos->time_to_eat = -1;
 	if (av[4] != NULL)
-		infos->time_to_sleep = (int)get_time(av[4]);
+		infos->time_to_sleep = (uint64_t)get_time(av[4]);
 	else
-		infos->time_to_sleep = 100;
+		infos->time_to_sleep = -1;
 	if (ac == 6 && av[5] != NULL)
-		infos->nb_meal = (int)get_time(av[5]);
+		infos->nb_meal = (uint64_t)get_time(av[5]);
 	else
 		infos->nb_meal = -2;
 	if (infos->time_to_die == -1 || infos->time_to_eat == -1

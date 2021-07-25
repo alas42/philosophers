@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/18 17:24:53 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/24 11:37:05 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ typedef struct s_table
 
 typedef struct s_infos
 {
-	double					time_to_die;
-	double					time_to_eat;
-	double					time_to_sleep;
+	uint64_t				time_to_die;
+	uint64_t				time_to_eat;
+	uint64_t				time_to_sleep;
 	int						nb_meal;
 	t_table					table;
 	pthread_mutex_t			lock;
