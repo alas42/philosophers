@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/25 17:08:01 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/26 15:12:48 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,42 @@
 
 static int	init_table(int ac, char *av[], t_infos *c)
 {
-	c->table.num_philos = get_num_philosophers(av[1]);
-	if (c->table.num_philos == -1)
+	if (ac < 2)
+		return (-1);
+	c->num_philos = get_num_philosophers(av[1]);
+	if (c->num_philos == 0)
 		return (-1);
 	return (1);
 }
 
 static int	init_constraints(int ac, char *av[], t_infos *infos)
 {
+	int check[3];
+	
 	if (av[2] != NULL)
-		infos->time_to_die = (unsigned long)get_time(av[2]);
+		check[0] = get_time(av[2]);
 	else
-		infos->time_to_die = -1;
+		return (-1);
 	if (av[3] != NULL)
-		infos->time_to_eat = (unsigned long)get_time(av[3]);
+		check[1] = get_time(av[3]);
 	else
-		infos->time_to_eat = -1;
+		return (-1);
 	if (av[4] != NULL)
-		infos->time_to_sleep = (unsigned long)get_time(av[4]);
+		check[2] = get_time(av[4]);
 	else
-		infos->time_to_sleep = -1;
+		return (-1);
 	if (ac == 6 && av[5] != NULL)
-		infos->nb_meal = (unsigned long)get_time(av[5]);
+		infos->nb_meal = get_time(av[5]);
 	else
 		infos->nb_meal = -2;
-	if (infos->time_to_die == -1 || infos->time_to_eat == -1
-		|| infos->time_to_sleep == -1 || infos->nb_meal == -1)
+	if (check[0] <= 0 || check[1] == -1
+		|| check[2] == -1 || infos->nb_meal == 0 || infos->nb_meal == -1)
 		return (-1);
+	infos->time_to_die = check[0];
+	infos->time_to_eat = check[1];
+	infos->time_to_sleep = check[2];
 	infos->finished = 0;
-	pthread_mutex_init(&infos->lock, NULL);
+	pthread_mutex_init(&infos->print, NULL);
 	return (1);
 }
 

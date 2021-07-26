@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 10:52:44 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/25 17:12:56 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/26 18:28:28 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,23 @@
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state->lock);
-	if (philo->state->state != DEAD)
-	{
-		philo->state->state = EATING;
-		printing(philo, EATING);
-		pthread_mutex_unlock(&philo->state->lock);
-		ft_usleep(philo->infos->time_to_eat);
-	}
-	else
-		pthread_mutex_unlock(&philo->state->lock);
+	printing(philo, EATING);
+	ft_usleep(get_ms_time(), philo->infos->time_to_eat);
 }
 
 void	sleeping(t_philo *philo)
 {
-	if (philo->state->state != DEAD)
-	{
-		philo->state->state = SLEEPING;
-		printing(philo, SLEEPING);
-		pthread_mutex_unlock(&philo->state->lock);
-		ft_usleep(philo->infos->time_to_sleep);
-	}
-	else
-		pthread_mutex_unlock(&philo->state->lock);
+	printing(philo, SLEEPING);
+	ft_usleep(get_ms_time(), philo->infos->time_to_sleep);
 }
 
 void	thinking(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state->lock);
-	if (philo->state->state != DEAD)
-	{
-		philo->state->state = THINKING;
-		printing(philo, THINKING);
-		pthread_mutex_unlock(&philo->state->lock);
-	}
-	else
-		pthread_mutex_unlock(&philo->state->lock);
+	printing(philo, THINKING);
 }
 
-void	take_fork(t_philo *philo, t_fork *fork)
+void	take_fork(t_philo *philo, pthread_mutex_t *fork)
 {
-	pthread_mutex_lock(&fork->lock);
-	pthread_mutex_lock(&philo->state->lock);
+	pthread_mutex_lock(fork);
 	printing(philo, TAKING_FORK);
-	pthread_mutex_unlock(&philo->state->lock);
 }

@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 16:59:13 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/24 10:40:57 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/26 12:37:05 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	get_num_philosophers(char *str)
 		if (!(str[i] <= '9' && str[i] >= '0'))
 			other = 1;
 	if (other != 0 || i == 0)
-		return (-1);
+		return (0);
 	i = -1;
 	while (str[++i] != '\0')
 	{

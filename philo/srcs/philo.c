@@ -6,94 +6,84 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/25 17:16:56 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/26 18:22:16 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	*finish(t_philo *philo)
+void	*finish(t_philo *philo, int index)
 {
-	printing(philo, DEAD);
-	pthread_mutex_unlock(&philo->state->lock);
+	printing(&philo[index], DEAD);
 	return (NULL);
 }
 
 void	*reaping(void *ptr)
 {
-	t_philo			*philo;
-	t_philo			*first;
+	t_philo			*philos;
 	int				counter;
-	unsigned long	time;
 	int				max_meal;
+	int				i;
 
-	first = (t_philo *)((t_philos *)ptr)->first;
-	max_meal = first->infos->table.num_philos;
+	philos = (t_philo *)ptr;
+	max_meal = philos->infos->num_philos;
 	counter = 0;
 	while (counter != max_meal)
 	{
 		counter = 0;
-		philo = first;
-		usleep(1000);
-		while (philo)
+		usleep(500);
+		i = 0;
+		while (i < max_meal)
 		{
-			pthread_mutex_lock(&philo->state->lock);
-			time = (get_ms_time() - philo->infos->table.start) - philo->state->time;
-			if (philo->state->state != FULL
-				&& time >= first->infos->time_to_die)
-				return (finish(philo));
-			else if (philo->state->state == FULL)
+			if (philos[i].state != FULL
+				&& get_ms_time() - philos[i].time >= philos[i].infos->time_to_die)
+				return (finish(philos, i));
+			else if (philos[i].state == FULL)
 				counter++;
-			pthread_mutex_unlock(&philo->state->lock);
-			philo = philo->next;
+			i++;
 		}
 	}
 	return (NULL);
 }
 
-void	launch_forks(t_philos *philos, t_infos *infos)
+void	launch_forks(t_philo *philos, t_infos *infos)
 {
 	int		i;
-	t_philo	*philo;
 
-	i = 1;
-	infos->table.start = get_ms_time();
-	while (i <= infos->table.num_philos)
+	i = 0;
+	infos->start = get_ms_time();
+	while (i < infos->num_philos)
 	{
-		philo = get_philo(philos, i);
-		pthread_create(&philo->thread, NULL, dining, (void *)philo);
+		pthread_create(&philos[i].thread, NULL, dining, (void *)&philos[i]);
 		i += 2;
 	}
-	i = 2;
-	while (i <= infos->table.num_philos)
+	i = 1;
+	usleep(1000);
+	while (i < infos->num_philos)
 	{
-		philo = get_philo(philos, i);
-		pthread_create(&philo->thread, NULL, dining, (void *)philo);
+		pthread_create(&philos[i].thread, NULL, dining, (void *)&philos[i]);
 		i += 2;
 	}
 }
 
-void	wait_forks(t_philos *philos, t_infos *infos)
+void	wait_forks(t_philo *philos, t_infos *infos)
 {
-	int		counter;
-	t_philo	*philo;
+	int		i;
 
-	counter = 1;
-	while (counter <= infos->table.num_philos)
+	i = 0;
+	while (i < infos->num_philos)
 	{
-		philo = get_philo(philos, counter);
-		pthread_join(philo->thread, NULL);
-		counter++;
+		pthread_join(philos[i].thread, NULL);
+		i++;
 	}
 }
 
 int	main(int argc, char *argv[])
 {
-	t_philos	*philos;
-	t_philo		*philo;
-	pthread_t	grim_reaper;
-	t_forks		*forks;
-	t_infos		*infos;
+	t_philo				*philos;
+	pthread_t			grim_reaper;
+	pthread_mutex_t		*forks;
+	t_infos				*infos;
 
 	if (argc == 0 || argv[0] == NULL)
 		ft_usage(NULL, NULL, NULL);
@@ -102,10 +92,10 @@ int	main(int argc, char *argv[])
 		return (ft_error(NULL, NULL, NULL));
 	if (init(argc, argv, infos) == -1)
 		return (ft_usage(infos, NULL, NULL));
-	forks = init_forks(infos->table.num_philos);
+	forks = init_forks(infos->num_philos);
 	if (!forks)
 		return (ft_error(infos, NULL, NULL));
-	philos = init_philos(infos->table.num_philos, infos, forks);
+	philos = init_philos(infos->num_philos, infos, forks);
 	if (!philos)
 		return (ft_error(infos, forks, NULL));
 	pthread_create(&grim_reaper, NULL, reaping, (void *)philos);

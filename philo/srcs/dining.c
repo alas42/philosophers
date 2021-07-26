@@ -6,33 +6,19 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 14:13:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/25 17:14:52 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/26 18:28:18 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int	is_dead(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->state->lock);
-	if (philo->state->state == DEAD)
-	{
-		pthread_mutex_unlock(&philo->state->lock);
-		return (1);
-	}
-	pthread_mutex_unlock(&philo->state->lock);
-	return (0);
-}
-
-static int	is_full(t_philo *philo)
+int	is_full(t_philo *philo)
 {
 	if (philo->infos->nb_meal > 0)
 	{
-		philo->state->times_eating += 1;
-		if (philo->state->times_eating == philo->infos->nb_meal)
+		philo->times_eating += 1;
+		if (philo->times_eating == philo->infos->nb_meal)
 		{
-			philo->state->state = FULL;
-			pthread_mutex_unlock(&philo->state->lock);
 			printing(philo, FULL);
 			return (1);
 		}
@@ -40,18 +26,18 @@ static int	is_full(t_philo *philo)
 	return (0);
 }
 
-static void	take_forks(t_philo *philo)
+void	take_forks(t_philo *philo)
 {
-	if (philo->id % 2)
+	if (philo->id % 2 == 1)
 	{
 		take_fork(philo, philo->left_fork);
-		if (philo->right_fork != NULL)
+		if (philo->infos->num_philos != 1)
 			take_fork(philo, philo->right_fork);
 		else
 		{
 			while (1)
 			{
-				if (is_dead(philo))
+				if (philo->state == DEAD)
 					return ;
 				usleep(200);
 			}
@@ -62,19 +48,18 @@ static void	take_forks(t_philo *philo)
 	take_fork(philo, philo->left_fork);
 }
 
-static void	depose_forks(t_philo *philo)
+void	depose_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->state->lock);
-	if (philo->id % 2)
+	if (philo->id % 2 == 1)
 	{
-		pthread_mutex_unlock(&philo->left_fork->lock);
-		if (philo->right_fork != NULL)
-			pthread_mutex_unlock(&philo->right_fork->lock);
+		pthread_mutex_unlock(philo->left_fork);
+		if (philo->infos->num_philos != 1)
+			pthread_mutex_unlock(philo->right_fork);
 	}
 	else
 	{
-		pthread_mutex_unlock(&philo->right_fork->lock);
-		pthread_mutex_unlock(&philo->left_fork->lock);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 	}
 }
 
@@ -83,11 +68,12 @@ void	*dining(void *ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr;
-	if (!(philo->id % 2) || philo->id == philo->infos->table.num_philos)
-		usleep(500);
+	philo->time = get_ms_time();
+	if (philo->id == philo->infos->num_philos)
+		ft_usleep(get_ms_time(), 1);
 	while (1)
 	{
-		if (is_dead(philo))
+		if (philo->state == DEAD)
 			break ;
 		take_forks(philo);
 		eating(ptr);
