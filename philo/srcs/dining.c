@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 14:13:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 13:52:35 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 15:47:54 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_full(t_philo *philo)
 		philo->times_eating += 1;
 		if (philo->times_eating == philo->infos->nb_meal)
 		{
-			printing(philo, FULL);
+			printing(philo, FULL, get_ms_time());
 			return (1);
 		}
 	}
@@ -38,7 +38,10 @@ int	take_forks(t_philo *philo)
 			while (1)
 			{
 				if (ft_usleep(get_ms_time(), 1, philo))
+				{
+					printing(philo, DEAD, get_ms_time());
 					return (1);
+				}
 				usleep(200);
 			}
 		}
@@ -69,11 +72,9 @@ void	*dining(void *ptr)
 	t_philo	*philo;
 
 	philo = (t_philo *)ptr;
-//	pthread_mutex_lock(&philo->mutex_time);
 	philo->time = get_ms_time();
-//	pthread_mutex_unlock(&philo->mutex_time);
-	if (philo->id == philo->infos->num_philos)
-		ft_usleep(get_ms_time(), 1, philo);
+	if (philo->id % 2 == 0)
+		usleep(500);
 	while (1)
 	{
 		if (take_forks(philo))
@@ -81,13 +82,13 @@ void	*dining(void *ptr)
 		if (eating(ptr))
 		{
 			depose_forks(philo);
-			printing(philo, DEAD);
+			printing(philo, DEAD, get_ms_time());
 			break;
 		}
 		depose_forks(philo);
 		if (is_full(philo) || sleeping(philo) || thinking(philo))
 		{
-			printing(philo, DEAD);
+			printing(philo, DEAD, get_ms_time());
 			break ;
 		}
 	}

@@ -6,13 +6,13 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 11:28:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 15:21:27 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 15:42:01 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int	ft_itoa_size(size_t n)
+static int	ft_itoa_size(unsigned long long n)
 {
 	int	size;
 
@@ -27,7 +27,7 @@ static int	ft_itoa_size(size_t n)
 	return (size);
 }
 
-static void	ft_itoa(size_t n, char *message, int *j)
+static void	ft_itoa(unsigned long long n, char *message, int *j)
 {
 	int	size;
 
@@ -46,7 +46,7 @@ static void	ft_itoa(size_t n, char *message, int *j)
 	message[*j] = '\0';
 }
 
-static void	ft_concat(size_t time, int id, char *message, char *action)
+static void	ft_concat(unsigned long long time, int id, char *message, char *action)
 {
 	int i;
 	int	j;
@@ -63,7 +63,7 @@ static void	ft_concat(size_t time, int id, char *message, char *action)
 	message[i] = '\0';
 }
 
-static char	*print_message(t_philo *philo, size_t time, int action)
+static char	*print_message(t_philo *philo, unsigned long long time, int action)
 {
 	char	*str[6];
 	char	*message;
@@ -82,14 +82,12 @@ static char	*print_message(t_philo *philo, size_t time, int action)
 	return (message);
 }
 
-int	printing(t_philo *philo, int action)
+int	printing(t_philo *philo, int action, unsigned long long time)
 {
-	size_t	time;
 	char	*str;
 
 	str = NULL;
 	pthread_mutex_lock(philo->print);
-	time = get_ms_time();
 	if (!philo->infos->finished)
 	{
 		if (action == EATING)

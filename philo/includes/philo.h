@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 14:49:32 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 15:41:53 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ enum e_statut { DEAD, EATING, SLEEPING, THINKING, TAKING_FORK, FULL };
 typedef struct s_infos
 {
 	int						num_philos;
-	size_t					start;
-	size_t					time_to_die;
-	size_t					time_to_eat;
-	size_t					time_to_sleep;
+	unsigned long long					start;
+	unsigned long long					time_to_die;
+	unsigned long long					time_to_eat;
+	unsigned long long					time_to_sleep;
 	int						nb_meal;
 	int						finished;
 }							t_infos;
@@ -37,7 +37,7 @@ typedef struct s_philo
 {	
 	struct s_infos			*infos;
 	int						id;
-	size_t					time;
+	unsigned long long				time;
 	int						times_eating;
 	pthread_t				thread;
 	pthread_mutex_t			*left_fork;
@@ -55,9 +55,9 @@ void					*dining(void *ptr);
 void					take_fork(t_philo *philo, pthread_mutex_t *fork);
 int						get_num_philosophers(char *str);
 int						get_time(char *str);
-size_t					get_ms_time(void);
+unsigned long long					get_ms_time(void);
 int						ft_len(char *str);
-int						printing(t_philo *philo, int action);
+int						printing(t_philo *philo, int action, unsigned long long time);
 int						init(int ac, char *av[], t_infos *infos);
 t_philo					*init_philos(int nb, t_infos *i,
 		pthread_mutex_t *fs, pthread_mutex_t *print);
@@ -67,5 +67,5 @@ void					free_philos(t_philo *p);
 void					free_forks(pthread_mutex_t *f, int n);
 int						ft_usage(t_infos *i, pthread_mutex_t *f, t_philo *ps);
 int						ft_error(t_infos *i, pthread_mutex_t *f, t_philo *ps);
-int						ft_usleep(size_t t, size_t desired_t, t_philo *p);
+int						ft_usleep(unsigned long long t, unsigned long long desired_t, t_philo *p);
 #endif
