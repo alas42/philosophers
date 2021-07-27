@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 21:59:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 15:41:52 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 22:00:49 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,22 @@ unsigned long long	get_ms_time(void)
 	return ((unsigned long long)((tv.tv_sec * 1000) + (tv.tv_usec / 1000)));
 }
 
-int	ft_usleep(unsigned long long time, unsigned long long desired_time, t_philo *p)
+int	ft_usleep(unsigned long long time, unsigned int desired_time, t_philo *p)
 {
 	unsigned long long	t;
 
 	t = time;
 	while (t - time < desired_time)
 	{
-		if (t - p->time < p->infos->time_to_die)
+		if (t - p->time <= p->infos->time_to_die)
 		{
-			usleep(200);
-			t = get_ms_time();
+			usleep(100);
 		}
 		else
 		{
 			return (1);
 		}
+		t = get_ms_time();
 	}
 	return (0);
 }

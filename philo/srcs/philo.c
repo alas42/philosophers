@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 15:45:34 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 18:57:53 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	launch_forks(t_philo *philos, t_infos *infos)
 		i += 2;
 	}
 	i = 1;
-	usleep(1000);
 	while (i < infos->num_philos)
 	{
 		pthread_create(&philos[i].thread, NULL, dining, (void *)&philos[i]);
