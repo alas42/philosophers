@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:22:34 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/26 18:22:55 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 14:50:33 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	free_infos(t_infos *infos)
 {
-	pthread_mutex_destroy(&infos->print);
 	free(infos);
 	infos = NULL;
 }
@@ -22,6 +21,7 @@ static void	free_infos(t_infos *infos)
 void	free_philos(t_philo *p)
 {
 	free(p);
+	p = NULL;
 }
 
 void	free_forks(pthread_mutex_t *f, int n)

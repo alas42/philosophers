@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 13:35:38 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 15:11:03 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	main(int argc, char *argv[])
 {
 	t_philo				*philos;
 	pthread_mutex_t		*forks;
+	pthread_mutex_t		*print;
 	t_infos				*infos;
 
 	if (argc == 0 || argv[0] == NULL)
@@ -101,13 +102,15 @@ int	main(int argc, char *argv[])
 	forks = init_forks(infos->num_philos);
 	if (!forks)
 		return (ft_error(infos, NULL, NULL));
-	philos = init_philos(infos->num_philos, infos, forks);
+	print = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(print, NULL);
+	philos = init_philos(infos->num_philos, infos, forks, print);
 	if (!philos)
 		return (ft_error(infos, forks, NULL));
-	//pthread_create(&grim_reaper, NULL, reaping, (void *)philos);
 	launch_forks(philos, infos);
-	//pthread_join(grim_reaper, NULL);
 	wait_forks(philos, infos);
+	pthread_mutex_destroy(print);
+	free(print);
 	ft_free(infos, forks, philos);
 	return (0);
 }

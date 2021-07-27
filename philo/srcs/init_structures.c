@@ -6,13 +6,13 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 14:29:51 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 13:29:34 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 14:49:26 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-t_philo	*init_philos(int nb, t_infos *infos, pthread_mutex_t *forks)
+t_philo	*init_philos(int nb, t_infos *infos, pthread_mutex_t *forks, pthread_mutex_t *print)
 {
 	t_philo	*philos;
 	int		c;
@@ -35,7 +35,7 @@ t_philo	*init_philos(int nb, t_infos *infos, pthread_mutex_t *forks)
 			philos[c].right_fork = &forks[c];
 		else
 			philos[c].right_fork = NULL;
-		//pthread_mutex_init(&philos[c].mutex_time, NULL);
+		philos[c].print = print;
 		c++;
 	}
 	return (philos);

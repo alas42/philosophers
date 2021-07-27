@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 11:28:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 13:50:36 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 15:16:22 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_itoa_size(size_t n)
 {
-	int				size;
+	int	size;
 
 	size = 0;
 	if (n == 0)
@@ -27,62 +27,45 @@ static int	ft_itoa_size(size_t n)
 	return (size);
 }
 
-static char	*ft_itoa(size_t n)
+static void	ft_itoa(size_t n, char *message, int *j)
 {
-	char			*str;
-	int				i;
-	int				size;
-	unsigned int	tmp;
+	int	size;
 
-	size = ft_itoa_size(n);
-	str = (char *)malloc(sizeof(char) * (size + 1));
-	if (!str)
-		return (NULL);
-	i = 1;
-	tmp = n;
-	if (tmp == 0)
-		str[0] = '0';
-	while (tmp >= 1)
+	size = *j + ft_itoa_size(n);
+	if (n == 0)
 	{
-		str[size - i] = (tmp % 10) + '0';
-		tmp /= 10;
-		i++;
+		message[*j] = '0';
+		*j = *j + 1;
 	}
-	str[size] = '\0';
-	return (str);
+	while (n >= 1)
+	{
+		message[--size] = (n % 10) + '0';
+		n /= 10;
+		*j = *j + 1;
+	}
+	message[*j] = '\0';
 }
 
-static char	*ft_concat(char *time, char *id, char *message, char *action)
+static void	ft_concat(size_t time, int id, char *message, char *action)
 {
 	int i;
 	int	j;
 
 	j = 0;
 	i = 0;
-	message = (char *)malloc(sizeof(char) * (10 + ft_len(id) + ft_len(action)));
-	if (message == NULL)
-		return (NULL);
-	while (time[i])
-	{
-		message[i] = time[i];
-		i++;
-	}
+	ft_itoa(time, message, &i);
 	while (i < 9)
 		message[i++] = ' ';
-	while (id[j] != '\0')
-		message[i++] = id[j++];
+	ft_itoa(id, message, &i);
 	j = 0;
 	while (action[j] != '\0')
 		message[i++] = action[j++];
 	message[i] = '\0';
-	return (message);
 }
 
-static void	print_message(t_philo *philo, size_t time, int action)
+static char	*print_message(t_philo *philo, size_t time, int action)
 {
 	char	*str[6];
-	char	*time_str;
-	char	*philo_str;
 	char	*message;
 
 	str[0] = " died\n";
@@ -91,37 +74,38 @@ static void	print_message(t_philo *philo, size_t time, int action)
 	str[3] = " is thinking\n";
 	str[4] = " has taken a fork\n";
 	str[5] = " is satiated\n";
-	time_str = ft_itoa(time);
-	philo_str = ft_itoa(philo->id);
-	message = NULL;
-	message = ft_concat(time_str, philo_str, message, str[action]);
-	free(time_str);
-	free(philo_str);
-	if (message == NULL)
-		return ;
-	write(1, message, ft_len(message));
-	free(message);
+
+	message = (char *)malloc(sizeof(char) * 33);
+	if (!message)
+		return (NULL);
+	ft_concat(time, philo->id, message, str[action]);
+	return (message);
 }
 
 int	printing(t_philo *philo, int action)
 {
 	size_t	time;
+	char	*str;
 
+	str = NULL;
+	pthread_mutex_lock(philo->print);
 	time = get_ms_time();
 	if (action == EATING)
 		philo->time = time;
-	pthread_mutex_lock(&philo->infos->print);
+	str = print_message(philo, time - philo->infos->start, action);
 	if (!philo->infos->finished)
 	{
-		print_message(philo, time - philo->infos->start, action);
+		write(1, str, ft_len(str));
 	}
 	if (action == DEAD)
 		philo->infos->finished = 1;
 	if (philo->infos->finished)
 	{
-		pthread_mutex_unlock(&philo->infos->print);
+		pthread_mutex_unlock(philo->print);
+		free(str);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->infos->print);
+	free(str);
+	pthread_mutex_unlock(philo->print);
 	return (0);
 }

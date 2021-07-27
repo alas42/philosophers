@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/26 15:12:48 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 14:48:07 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static int	init_constraints(int ac, char *av[], t_infos *infos)
 	infos->time_to_eat = check[1];
 	infos->time_to_sleep = check[2];
 	infos->finished = 0;
-	pthread_mutex_init(&infos->print, NULL);
 	return (1);
 }
 

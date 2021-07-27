@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 13:35:20 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 14:49:32 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct s_infos
 	size_t					time_to_eat;
 	size_t					time_to_sleep;
 	int						nb_meal;
-	pthread_mutex_t			print;
 	int						finished;
 }							t_infos;
 
@@ -43,6 +42,7 @@ typedef struct s_philo
 	pthread_t				thread;
 	pthread_mutex_t			*left_fork;
 	pthread_mutex_t			*right_fork;
+	pthread_mutex_t			*print;
 }							t_philo;
 
 int						thinking(t_philo *ptr);
@@ -59,7 +59,8 @@ size_t					get_ms_time(void);
 int						ft_len(char *str);
 int						printing(t_philo *philo, int action);
 int						init(int ac, char *av[], t_infos *infos);
-t_philo					*init_philos(int nb, t_infos *i, pthread_mutex_t *fs);
+t_philo					*init_philos(int nb, t_infos *i,
+		pthread_mutex_t *fs, pthread_mutex_t *print);
 pthread_mutex_t			*init_forks(int nb);
 void					ft_free(t_infos *i, pthread_mutex_t *f, t_philo *ps);
 void					free_philos(t_philo *p);
