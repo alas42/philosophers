@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 11:28:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/26 17:05:27 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 13:50:36 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static char	*ft_concat(char *time, char *id, char *message, char *action)
 	return (message);
 }
 
-static void	get_print_message(t_philo *philo, size_t time, int action)
+static void	print_message(t_philo *philo, size_t time, int action)
 {
 	char	*str[6];
 	char	*time_str;
@@ -103,23 +103,25 @@ static void	get_print_message(t_philo *philo, size_t time, int action)
 	free(message);
 }
 
-void	printing(t_philo *philo, int action)
+int	printing(t_philo *philo, int action)
 {
 	size_t	time;
 
-	philo->state = action;
 	time = get_ms_time();
 	if (action == EATING)
 		philo->time = time;
 	pthread_mutex_lock(&philo->infos->print);
 	if (!philo->infos->finished)
 	{
-		philo->state = action;
-		get_print_message(philo, time - philo->infos->start, action);
+		print_message(philo, time - philo->infos->start, action);
 	}
-	pthread_mutex_unlock(&philo->infos->print);
 	if (action == DEAD)
 		philo->infos->finished = 1;
 	if (philo->infos->finished)
-		philo->state = DEAD;
+	{
+		pthread_mutex_unlock(&philo->infos->print);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->infos->print);
+	return (0);
 }

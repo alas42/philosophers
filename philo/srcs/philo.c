@@ -6,14 +6,15 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/26 18:22:16 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 13:35:38 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
+/*
 void	*finish(t_philo *philo, int index)
 {
+//	pthread_mutex_unlock(&philo[index].mutex_time);
 	printing(&philo[index], DEAD);
 	return (NULL);
 }
@@ -24,9 +25,13 @@ void	*reaping(void *ptr)
 	int				counter;
 	int				max_meal;
 	int				i;
+	size_t			time_to_die;
 
 	philos = (t_philo *)ptr;
+	pthread_mutex_lock(&philos[0].infos->print);
 	max_meal = philos->infos->num_philos;
+	time_to_die = philos[0].infos->time_to_die;
+	pthread_mutex_unlock(&philos[0].infos->print);
 	counter = 0;
 	while (counter != max_meal)
 	{
@@ -35,16 +40,18 @@ void	*reaping(void *ptr)
 		i = 0;
 		while (i < max_meal)
 		{
+		//	pthread_mutex_lock(&philos[i].mutex_time);
 			if (philos[i].state != FULL
-				&& get_ms_time() - philos[i].time >= philos[i].infos->time_to_die)
+				&& get_ms_time() - philos[i].time >= time_to_die)
 				return (finish(philos, i));
 			else if (philos[i].state == FULL)
 				counter++;
+			//pthread_mutex_unlock(&philos[i].mutex_time);
 			i++;
 		}
 	}
 	return (NULL);
-}
+}*/
 
 void	launch_forks(t_philo *philos, t_infos *infos)
 {
@@ -81,7 +88,6 @@ void	wait_forks(t_philo *philos, t_infos *infos)
 int	main(int argc, char *argv[])
 {
 	t_philo				*philos;
-	pthread_t			grim_reaper;
 	pthread_mutex_t		*forks;
 	t_infos				*infos;
 
@@ -98,9 +104,9 @@ int	main(int argc, char *argv[])
 	philos = init_philos(infos->num_philos, infos, forks);
 	if (!philos)
 		return (ft_error(infos, forks, NULL));
-	pthread_create(&grim_reaper, NULL, reaping, (void *)philos);
+	//pthread_create(&grim_reaper, NULL, reaping, (void *)philos);
 	launch_forks(philos, infos);
-	pthread_join(grim_reaper, NULL);
+	//pthread_join(grim_reaper, NULL);
 	wait_forks(philos, infos);
 	ft_free(infos, forks, philos);
 	return (0);

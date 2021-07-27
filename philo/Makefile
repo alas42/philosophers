@@ -6,7 +6,7 @@
 #    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/21 11:09:35 by avogt             #+#    #+#              #
-#    Updated: 2021/07/26 18:24:15 by avogt            ###   ########.fr        #
+#    Updated: 2021/07/27 13:54:44 by avogt            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SOURCES_FILES = $(addprefix $(FOLDER_SOURCES)/,$(FILES))
 OBJS = $(SOURCES_FILES:.c=.o)
 
 IFLAGS = -I ./include
-CFLAGS = -Wall -Werror -Wextra -pthread 
+CFLAGS = -Wall -Werror -Wextra -pthread
 CC = gcc $(CFLAGS)
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 14:29:51 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/26 18:20:47 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 13:29:34 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_philo	*init_philos(int nb, t_infos *infos, pthread_mutex_t *forks)
 		philos[c].id = c + 1;
 		philos[c].time = get_ms_time();
 		philos[c].times_eating = 0;
-		philos[c].state = THINKING;
 		if (c == 0)
 			philos[c].left_fork = &forks[nb - 1];
 		else
@@ -36,6 +35,7 @@ t_philo	*init_philos(int nb, t_infos *infos, pthread_mutex_t *forks)
 			philos[c].right_fork = &forks[c];
 		else
 			philos[c].right_fork = NULL;
+		//pthread_mutex_init(&philos[c].mutex_time, NULL);
 		c++;
 	}
 	return (philos);

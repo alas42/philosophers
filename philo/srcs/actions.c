@@ -6,27 +6,35 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 10:52:44 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/26 18:28:28 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 13:33:16 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-void	eating(t_philo *philo)
+int	eating(t_philo *philo)
 {
-	printing(philo, EATING);
-	ft_usleep(get_ms_time(), philo->infos->time_to_eat);
+	if (printing(philo, EATING))
+		return (1);
+	if (ft_usleep(get_ms_time(), philo->infos->time_to_eat, philo))
+		return (1);
+	return (0);
 }
 
-void	sleeping(t_philo *philo)
+int	sleeping(t_philo *philo)
 {
-	printing(philo, SLEEPING);
-	ft_usleep(get_ms_time(), philo->infos->time_to_sleep);
+	if (printing(philo, SLEEPING))
+		return (1);
+	if (ft_usleep(get_ms_time(), philo->infos->time_to_sleep, philo))
+		return (1);
+	return (0);
 }
 
-void	thinking(t_philo *philo)
+int	thinking(t_philo *philo)
 {
-	printing(philo, THINKING);
+	if (printing(philo, THINKING))
+		return (1);
+	return (0);
 }
 
 void	take_fork(t_philo *philo, pthread_mutex_t *fork)
