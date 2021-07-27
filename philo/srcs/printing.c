@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 11:28:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 15:16:22 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/27 15:21:27 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,22 +90,21 @@ int	printing(t_philo *philo, int action)
 	str = NULL;
 	pthread_mutex_lock(philo->print);
 	time = get_ms_time();
-	if (action == EATING)
-		philo->time = time;
-	str = print_message(philo, time - philo->infos->start, action);
 	if (!philo->infos->finished)
 	{
+		if (action == EATING)
+			philo->time = time;
+		str = print_message(philo, time - philo->infos->start, action);
 		write(1, str, ft_len(str));
+		free(str);
 	}
 	if (action == DEAD)
 		philo->infos->finished = 1;
 	if (philo->infos->finished)
 	{
 		pthread_mutex_unlock(philo->print);
-		free(str);
 		return (1);
 	}
-	free(str);
 	pthread_mutex_unlock(philo->print);
 	return (0);
 }
