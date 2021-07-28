@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 14:48:07 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:04:01 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	init_constraints(int ac, char *av[], t_infos *infos)
 	infos->time_to_die = check[0];
 	infos->time_to_eat = check[1];
 	infos->time_to_sleep = check[2];
+	infos->str = (char *)malloc(sizeof(char) * 35);
 	infos->finished = 0;
 	return (1);
 }

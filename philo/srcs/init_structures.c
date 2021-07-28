@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 14:29:51 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 14:49:26 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 16:34:20 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_philo	*init_philos(int nb, t_infos *infos, pthread_mutex_t *forks, pthread_mut
 	{
 		philos[c].infos = infos;
 		philos[c].id = c + 1;
-		philos[c].time = get_ms_time();
 		philos[c].times_eating = 0;
 		if (c == 0)
 			philos[c].left_fork = &forks[nb - 1];

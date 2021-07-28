@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:09 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 18:57:53 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 16:30:42 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ void	launch_forks(t_philo *philos, t_infos *infos)
 	infos->start = get_ms_time();
 	while (i < infos->num_philos)
 	{
+		philos[i].time = infos->start;
 		pthread_create(&philos[i].thread, NULL, dining, (void *)&philos[i]);
 		i += 2;
 	}
 	i = 1;
 	while (i < infos->num_philos)
 	{
+		philos[i].time = infos->start;
 		pthread_create(&philos[i].thread, NULL, dining, (void *)&philos[i]);
 		i += 2;
 	}

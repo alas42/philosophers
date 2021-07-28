@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 14:13:17 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 19:00:41 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 16:24:26 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	take_forks(t_philo *philo)
 				if (ft_usleep(get_ms_time(), 10, philo))
 				{
 					printing(philo, DEAD, get_ms_time());
+					pthread_mutex_unlock(philo->left_fork);
 					return (1);
 				}
 			}
@@ -85,7 +86,9 @@ void	*dining(void *ptr)
 			break;
 		}
 		depose_forks(philo);
-		if (is_full(philo) || sleeping(philo) || thinking(philo))
+		if (is_full(philo))
+			break ;
+		if (sleeping(philo) || thinking(philo))
 		{
 			printing(philo, DEAD, get_ms_time());
 			break ;

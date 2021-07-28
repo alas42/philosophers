@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:22:34 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 14:50:33 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:04:29 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	free_infos(t_infos *infos)
 {
+	free(infos->str);
 	free(infos);
 	infos = NULL;
 }

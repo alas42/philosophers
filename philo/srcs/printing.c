@@ -6,13 +6,13 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 11:28:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 22:01:05 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:08:31 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-static int	ft_itoa_size(unsigned long long n)
+static int	ft_itoa_size(long long n)
 {
 	int	size;
 
@@ -27,7 +27,7 @@ static int	ft_itoa_size(unsigned long long n)
 	return (size);
 }
 
-static void	ft_itoa(unsigned long long n, char *message, int *j)
+static void	ft_itoa(long long n, char *message, int *j)
 {
 	int	size;
 
@@ -46,55 +46,40 @@ static void	ft_itoa(unsigned long long n, char *message, int *j)
 	message[*j] = '\0';
 }
 
-static void	ft_concat(unsigned long long time, int id, char *message, char *action)
-{
-	int i;
-	int	j;
-
-	j = 0;
-	i = 0;
-	ft_itoa(time, message, &i);
-	while (i < 9)
-		message[i++] = ' ';
-	ft_itoa(id, message, &i);
-	j = 0;
-	while (action[j] != '\0')
-		message[i++] = action[j++];
-	message[i] = '\0';
-}
-
-static char	*print_message(t_philo *philo, unsigned long long time, int action)
+static void	print_message(t_philo *philo, long long time, int action)
 {
 	char	*str[6];
-	char	*message;
+	int		i;
+	int		j;
 
-	str[0] = " died\n";
-	str[1] = " is eating\n";
-	str[2] = " is sleeping\n";
-	str[3] = " is thinking\n";
-	str[4] = " has taken a fork\n";
-	str[5] = " is satiated\n";
-
-	message = (char *)malloc(sizeof(char) * 33);
-	if (!message)
-		return (NULL);
-	ft_concat(time, philo->id, message, str[action]);
-	return (message);
+	i = 0;
+	str[0] = " died\n0";
+	str[1] = " is eating\n0";
+	str[2] = " is sleeping\n0";
+	str[3] = " is thinking\n0";
+	str[4] = " has taken a fork\n0";
+	str[5] = " is satiated\n0";
+	ft_itoa(time, philo->infos->str, &i);
+	while (i < 9)
+		philo->infos->str[i++] = ' ';
+	ft_itoa(philo->id, philo->infos->str, &i);
+	j = 0;
+	while (str[action][j] != '0')
+		philo->infos->str[i++] = str[action][j++];
+	philo->infos->str[i] = '\0';
 }
 
-int	printing(t_philo *philo, int action, unsigned long long time)
+int	printing(t_philo *philo, int action, long long time)
 {
-	char	*str;
-
-	str = NULL;
 	pthread_mutex_lock(philo->print);
 	if (!philo->infos->finished)
 	{
+		if (time - philo->time >= philo->infos->time_to_die)
+			action = DEAD;
 		if (action == EATING)
 			philo->time = time;
-		str = print_message(philo, time - philo->infos->start, action);
-		write(1, str, ft_len(str));
-		free(str);
+		print_message(philo, time - philo->infos->start, action);
+		write(1, philo->infos->str, ft_len(philo->infos->str));
 	}
 	if (action == DEAD)
 		philo->infos->finished = 1;
