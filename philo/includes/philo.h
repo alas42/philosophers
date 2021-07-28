@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/28 16:32:55 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:31:10 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ void					free_philos(t_philo *p);
 void					free_forks(pthread_mutex_t *f, int n);
 int						ft_usage(t_infos *i, pthread_mutex_t *f, t_philo *ps);
 int						ft_error(t_infos *i, pthread_mutex_t *f, t_philo *ps);
-int						ft_usleep(long long t, unsigned int desired_t, t_philo *p);
+int						ft_usleep(long long t, long long desired_t, t_philo *p);
 #endif

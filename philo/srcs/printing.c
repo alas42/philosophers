@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 11:28:20 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/28 17:08:31 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:26:32 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	printing(t_philo *philo, int action, long long time)
 	pthread_mutex_lock(philo->print);
 	if (!philo->infos->finished)
 	{
-		if (time - philo->time >= philo->infos->time_to_die)
+		if (time - philo->time > philo->infos->time_to_die)
 			action = DEAD;
 		if (action == EATING)
 			philo->time = time;

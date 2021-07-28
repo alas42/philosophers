@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 10:52:44 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/27 15:36:12 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:23:15 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,20 @@
 
 int	eating(t_philo *philo)
 {
-	if (printing(philo, EATING, get_ms_time()))
+	long long time = get_ms_time();
+	if (printing(philo, EATING, time))
 		return (1);
-	if (ft_usleep(get_ms_time(), philo->infos->time_to_eat, philo))
+	if (ft_usleep(time, philo->infos->time_to_eat, philo))
 		return (1);
 	return (0);
 }
 
 int	sleeping(t_philo *philo)
 {
-	if (printing(philo, SLEEPING, get_ms_time()))
+	long long time = get_ms_time();
+	if (printing(philo, SLEEPING, time))
 		return (1);
-	if (ft_usleep(get_ms_time(), philo->infos->time_to_sleep, philo))
+	if (ft_usleep(time, philo->infos->time_to_sleep, philo))
 		return (1);
 	return (0);
 }

@@ -6,18 +6,11 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 11:22:34 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/28 17:04:29 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/28 17:23:40 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-static void	free_infos(t_infos *infos)
-{
-	free(infos->str);
-	free(infos);
-	infos = NULL;
-}
 
 void	free_philos(t_philo *p)
 {
@@ -44,7 +37,10 @@ void	ft_free(t_infos *i, pthread_mutex_t *f, t_philo *ps)
 
 	n = i->num_philos;
 	if (i)
-		free_infos(i);
+	{
+		free(i->str);
+		free(i);
+	}
 	if (f)
 		free_forks(f, n);
 	if (ps)
