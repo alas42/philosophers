@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 16:59:13 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/28 16:28:13 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/29 11:34:45 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	get_num_philosophers(char *str)
 long long	get_time(char *str)
 {
 	long long	time;
-	int	i;
-	int	other;
+	int			i;
+	int			other;
 
 	time = 0;
 	i = -1;

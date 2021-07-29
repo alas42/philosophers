@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 17:21:18 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/28 17:04:01 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/29 13:23:08 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static int	init_table(int ac, char *av[], t_infos *c)
 
 static int	init_constraints(int ac, char *av[], t_infos *infos)
 {
-	int check[3];
-	
+	int	check[3];
+
 	if (av[2] != NULL)
 		check[0] = get_time(av[2]);
 	else
@@ -48,16 +48,22 @@ static int	init_constraints(int ac, char *av[], t_infos *infos)
 	infos->time_to_die = check[0];
 	infos->time_to_eat = check[1];
 	infos->time_to_sleep = check[2];
-	infos->str = (char *)malloc(sizeof(char) * 35);
-	infos->finished = 0;
 	return (1);
 }
 
-int	init(int ac, char *av[], t_infos *c)
+int	init(int ac, char *av[], t_infos *info)
 {
+	if (info == NULL)
+		return (-1);
 	if (ac < 5 || ac > 6)
 		return (-1);
-	if (init_table(ac, av, c) == 1 && init_constraints(ac, av, c) == 1)
+	if (init_table(ac, av, info) == 1 && init_constraints(ac, av, info) == 1)
+	{
+		info->str = (char *)malloc(sizeof(char) * 35);
+		info->finished = 0;
 		return (1);
+	}
+	info->str = NULL;
+	info->finished = 1;
 	return (-1);
 }
