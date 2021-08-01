@@ -6,7 +6,7 @@
 #    By: avogt <avogt@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/21 11:09:35 by avogt             #+#    #+#              #
-#    Updated: 2021/07/29 11:28:14 by avogt            ###   ########.fr        #
+#    Updated: 2021/07/31 11:18:20 by avogt            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,8 @@ FILES = philo.c \
 	utils.c \
 	actions.c \
 	dining.c \
-	printing.c
+	printing.c \
+	reaping.c
 
 FOLDER_SOURCES = srcs
 SOURCES_FILES = $(addprefix $(FOLDER_SOURCES)/,$(FILES))
