@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/21 11:17:23 by avogt             #+#    #+#             */
-/*   Updated: 2021/07/29 11:39:05 by avogt            ###   ########.fr       */
+/*   Updated: 2021/07/31 12:02:18 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,12 @@ typedef struct s_philo
 	pthread_mutex_t	*print;
 }					t_philo;
 
+void				*reaping(void *ptr);
+int					check_philo(t_philo *philo);
+void				wait_forks(t_philo *philos, t_infos *infos,
+						pthread_mutex_t *print, pthread_mutex_t *forks);
+void				launch_forks(t_philo *philos, t_infos *infos,
+						pthread_mutex_t *print, pthread_mutex_t *forks);
 int					thinking(t_philo *ptr);
 int					sleeping(t_philo *ptr);
 int					eating(t_philo *ptr);
@@ -64,6 +70,8 @@ int					init(int ac, char *av[], t_infos *infos);
 t_philo				*init_philos(t_infos *i,
 						pthread_mutex_t *fs, pthread_mutex_t *print,
 						pthread_mutex_t *i_p);
+/*int	init_mutexes(pthread_mutex_t *print, pthread_mutex_t *infos_philos,
+						pthread_mutex_t *forks, t_infos *infos);*/
 pthread_mutex_t		*init_forks(int nb);
 void				ft_free(t_infos *i, pthread_mutex_t *f, t_philo *ps);
 void				free_philos(t_philo *p, int n);

@@ -6,7 +6,7 @@
 /*   By: avogt <avogt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 14:29:51 by avogt             #+#    #+#             */
-/*   Updated: 2021/08/01 11:35:59 by avogt            ###   ########.fr       */
+/*   Updated: 2021/08/01 11:46:23 by avogt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_philo	*init_philos(t_infos *infos, pthread_mutex_t *forks,
 
 	c = -1;
 	philos = (t_philo *)malloc(sizeof(t_philo) * infos->num_philos);
-	if (philos == NULL || print == NULL || forks == NULL)
+	if (philos == NULL || print == NULL)
 		return (NULL);
 	while (++c < infos->num_philos)
 	{
@@ -36,8 +36,8 @@ t_philo	*init_philos(t_infos *infos, pthread_mutex_t *forks,
 		else
 			philos[c].right_fork = NULL;
 		philos[c].print = print;
-		pthread_mutex_init(&i_p[c], NULL);
 		philos[c].info_philo = &i_p[c];
+		pthread_mutex_init(&i_p[c], NULL);
 	}
 	return (philos);
 }
